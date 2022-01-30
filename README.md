@@ -22,6 +22,18 @@ Install and update using [pip](https://pypi.org/project/case-insensitive-diction
 $ pip install -U case-insensitive-dictionary
 ```
 
+## Example
+
+```py
+>>> from case_insensitive_dict import CaseInsensitiveDict
+
+>>> case_insensitive_dict = CaseInsensitiveDict[str](data={"Aa": "b"})
+>>> case_insensitive_dict.get("aa")
+'b'
+>>> case_insensitive_dict.get("Aa")
+'b'
+```
+
 ## Contributing
 
 Contributions are welcome via pull requests.
