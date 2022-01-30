@@ -10,9 +10,10 @@ repository = "https://github.com/DeveloperRSquared/case-insensitive-dictionary"
 keywords=[
     "python",
     "python3",
-    "date",
-    "datetime",
+    "dict",
     "development",
+    "tooling",
+    "utils",
 ]
 classifiers=[
     "Development Status :: 5 - Production/Stable",
