@@ -1,0 +1,74 @@
+ci:
+  skip: [pylint]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-ast
+      - id: check-builtin-literals
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-executables-have-shebangs
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-shebang-scripts-are-executable
+      - id: check-toml
+      - id: check-xml
+      - id: check-yaml
+      - id: debug-statements
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: no-commit-to-branch
+        args: ['--branch', 'main']
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        args: ['--settings-file', 'pyproject.toml']
+  - repo: https://github.com/myint/autoflake.git
+    rev: v1.4
+    hooks:
+      - id: autoflake
+        args:
+          [
+            '--in-place',
+            '--remove-unused-variable',
+            '--remove-all-unused-imports',
+            '--expand-star-imports',
+            '--ignore-init-module-imports',
+          ]
+  - repo: https://github.com/psf/black
+    rev: 21.12b0
+    hooks:
+      - id: black
+        language_version: python3
+        args: ['--config', 'pyproject.toml']
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        args: ['--config', '.flake8']
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: 'poetry run python -m pylint'
+        types: [python]
+        language: system
+        args: ['--rcfile', 'pyproject.toml']
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.9.0
+    hooks:
+      - id: python-no-eval
+      - id: python-no-log-warn
+      - id: python-check-mock-methods
+      - id: python-use-type-annotations
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.931
+    hooks:
+      - id: mypy
+        exclude: ^.*\b(migrations)\b.*$
+        args: ['--config-file', 'pyproject.toml']
