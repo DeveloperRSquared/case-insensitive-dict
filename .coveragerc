@@ -1,0 +1,22 @@
+[run]
+branch = True
+source = case_insensitive_dict
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    def __str__
+    if self\.debug
+    pragma: no cover
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    @(abc\.)?abstractmethod
+    if TYPE_CHECKING
+
+fail_under = 95
+
+omit =
+    tests/*
+    **/__init__.py

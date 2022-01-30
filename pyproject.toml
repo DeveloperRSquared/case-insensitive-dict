@@ -1,0 +1,162 @@
+[tool.poetry]
+name = "case-insensitive-dictionary"
+version = "0.0.1"
+description = "Case Insensitive Dictionary"
+authors = ["rikhilrai"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/DeveloperRSquared/case-insensitive-dictionary"
+repository = "https://github.com/DeveloperRSquared/case-insensitive-dictionary"
+keywords=[
+    "python",
+    "python3",
+    "date",
+    "datetime",
+    "development",
+]
+classifiers=[
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+include = [
+    "LICENSE",
+]
+packages = [
+    { include = "case_insensitive_dict", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.931"
+black = "^21.12b0"
+flake8 = "^4.0.1"
+isort = "^5.10.1"
+pre-commit = "^2.17.0"
+pytest = "^6.2.5"
+pylint = "^2.12.2"
+autoflake = "^1.4"
+pytest-cov = "^3.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+line_length = 200
+force_single_line = true
+
+skip = [
+  "migrations",
+  "versions",
+]
+
+[tool.black]
+line-length = 200
+skip-string-normalization = true
+include = '.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | \.env
+  | _build
+  | buck-out
+  | build
+  | dist
+  | node_modules
+)/
+'''
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--capture=no --log-cli-level=INFO --cov=src/case_insensitive_dict/ --cov-report term-missing --cov-report=xml --cov-fail-under=90 --cov-config=./.coveragerc src/tests/"
+testpaths = [
+    "tests",
+]
+xfail_strict = true
+
+[tool.pylint.master]
+ignore = [
+  "CVS",
+  "versions",
+  "migrations",
+]
+ignore-patterns = [
+  "versions"
+]
+
+[tool.pylint.basic]
+good-names = [
+  "db",
+  "id",
+  "df",
+  "T",
+  "dt",
+]
+
+[tool.pylint.similarities]
+min-similarity-lines = 20
+ignore-comments = "yes"
+ignore-docstrings = "yes"
+ignore-imports = "yes"
+
+[tool.pylint.messages_control]
+disable = [
+  "missing-module-docstring",
+  "missing-function-docstring",
+  "too-many-locals",
+  "too-many-arguments",
+  "too-few-public-methods",
+  "logging-fstring-interpolation",
+  "missing-class-docstring",
+  "line-too-long",
+  "fixme",
+  "too-many-statements",
+  "too-many-branches",
+  "too-many-nested-blocks",
+  "too-many-instance-attributes",
+  "too-many-boolean-expressions",
+]
+extension-pkg-whitelist = "pydantic"
+
+[tool.pylint.typecheck]
+ignored-modules = [
+  "alembic.op",
+  "alembic.context",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+disallow_untyped_defs = true
+
+# Warnings
+warn_return_any = true
+# warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unreachable = true
+
+# Miscellaneous
+strict_equality = true
+
+# Error messages
+show_error_context = true
+show_column_numbers = true
+show_error_codes = true
+# pretty = true
+# show_absolute_path = true
