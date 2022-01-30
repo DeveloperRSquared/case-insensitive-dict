@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "case-insensitive-dictionary"
-version = "0.0.2"
+version = "0.0.3"
 description = "Case Insensitive Dictionary"
 authors = ["rikhilrai"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/DeveloperRSquared/case-insensitive-dictionary"
-repository = "https://github.com/DeveloperRSquared/case-insensitive-dictionary"
+homepage = "https://github.com/DeveloperRSquared/case-insensitive-dict"
+repository = "https://github.com/DeveloperRSquared/case-insensitive-dict"
 keywords=[
     "python",
     "python3",
