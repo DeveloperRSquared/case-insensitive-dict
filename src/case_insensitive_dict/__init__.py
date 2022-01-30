@@ -11,3 +11,5 @@ try:
     __version__: str = version(__name__)
 except PackageNotFoundError:
     __version__ = "unknown"
+
+from .case_insensitive_dict import CaseInsensitiveDict
