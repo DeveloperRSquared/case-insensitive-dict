@@ -8,7 +8,7 @@ Case Insensitive Dictionary
 [![PyPI - License](https://img.shields.io/pypi/l/case-insensitive-dictionary.svg)](LICENSE)
 [![PyPI - Version](https://img.shields.io/pypi/v/case-insensitive-dictionary.svg)](https://pypi.org/project/case-insensitive-dictionary)
 
-[![codecov](https://codecov.io/gh/DeveloperRSquared/case-insensitive-dict/branch/main/graph/badge.svg?token=UI5ZDDDXXB)](https://codecov.io/gh/DeveloperRSquared/case-insensitive-dict)
+[![codecov](https://codecov.io/gh/DeveloperRSquared/case-insensitive-dict/branch/main/graph/badge.svg?token=45JCHX8KT9)](https://codecov.io/gh/DeveloperRSquared/case-insensitive-dict)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/DeveloperRSquared/case-insensitive-dict/main.svg)](https://results.pre-commit.ci/latest/github/DeveloperRSquared/case-insensitive-dict/main)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
