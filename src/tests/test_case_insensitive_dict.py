@@ -1,9 +1,13 @@
 # pylint: disable=no-self-use,protected-access
+import json
 from types import GeneratorType
+from typing import Union
 
 import pytest
 
 from case_insensitive_dict import CaseInsensitiveDict
+from case_insensitive_dict import CaseInsensitiveDictJSONEncoder
+from case_insensitive_dict import case_insensitive_dict_json_decoder
 
 
 class CaseInsensitiveDictTestCase:
@@ -34,6 +38,38 @@ class TestInit(CaseInsensitiveDictTestCase):
         assert not case_insensitive_dict._data
 
 
+class TestTyping(CaseInsensitiveDictTestCase):
+    # check valid typing
+    def test_valid_types(self) -> None:
+        case_insensitive_dict = CaseInsensitiveDict[str](data={"a": "b"})
+        # keys
+        case_insensitive_dict['a']  # pylint: disable=pointless-statement
+        case_insensitive_dict.get('a')
+        # values
+        case_insensitive_dict['b'] = 'a'
+
+    # check valid with union
+    def test_valid_types_union(self) -> None:
+        case_insensitive_dict = CaseInsensitiveDict[Union[str, int, bool]](data={"a": "b", "b": 1})
+        # values
+        case_insensitive_dict['b'] = 'a'
+        case_insensitive_dict['b'] = 2
+        case_insensitive_dict['b'] = True
+
+    # check invalid types
+    def test_invalid_type(self) -> None:
+        case_insensitive_dict = CaseInsensitiveDict[int](data={"a": "3"})  # type: ignore[dict-item]
+        case_insensitive_dict['b'] = "2"  # type: ignore[assignment]
+
+
+class TestContains(CaseInsensitiveDictTestCase):
+    # check that key in CaseInsensitiveDict check works as expected
+    def test_contains(self) -> None:
+        case_insensitive_dict = CaseInsensitiveDict[str](data={"A": "b"})
+        assert 'A' in case_insensitive_dict
+        assert 'a' in case_insensitive_dict
+
+
 class TestSetItem(CaseInsensitiveDictTestCase):
     # check key lowered
     def test_store_written(self) -> None:
@@ -55,15 +91,18 @@ class TestGetItem(CaseInsensitiveDictTestCase):
         case_insensitive_dict = CaseInsensitiveDict[str]({"a": "b"})
         assert case_insensitive_dict["A"] == "b"
         assert case_insensitive_dict["a"] == "b"
+
+    def test_value_missing(self) -> None:
+        case_insensitive_dict = CaseInsensitiveDict[str]()
         with pytest.raises(KeyError):
             assert case_insensitive_dict["b"]
+        assert case_insensitive_dict.get("b") is None
 
     # check value returned using get
     def test_value_returned_using_get(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[str]({"a": "b"})
         assert case_insensitive_dict.get("A") == "b"
         assert case_insensitive_dict.get("a") == "b"
-        assert case_insensitive_dict.get("b") is None
 
 
 class TestDelItem(CaseInsensitiveDictTestCase):
@@ -138,3 +177,18 @@ class TestCopy(CaseInsensitiveDictTestCase):
     def test_copy_ids(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[str]({"A": "b"})
         assert id(case_insensitive_dict) != id(case_insensitive_dict.copy())
+
+
+class TestJson(CaseInsensitiveDictTestCase):
+    # check to_json
+    def test_to_json(self) -> None:
+        case_insensitive_dict = CaseInsensitiveDict[Union[str, int, bool]]({"A": "a", "b": 1, "c": False})
+        json_string = json.dumps(obj=case_insensitive_dict, cls=CaseInsensitiveDictJSONEncoder)
+        assert json_string == '{"A": "a", "b": 1, "c": false}'
+
+    # check from_json
+    def test_from_json(self) -> None:
+        json_string = '{"A": "a", "b": 1, "c": false}'
+        json_obj = json.loads(s=json_string, object_hook=case_insensitive_dict_json_decoder)
+        expected_case_insensitive_dict = CaseInsensitiveDict[Union[str, int, bool]]({"A": "a", "b": 1, "c": False})
+        assert json_obj == expected_case_insensitive_dict

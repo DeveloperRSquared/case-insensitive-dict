@@ -34,6 +34,25 @@ $ pip install -U case-insensitive-dictionary
 'b'
 ```
 
+CaseInsensitiveDict is also compatible with json encoding/decoding:
+
+```py
+>>> import json
+
+>>> from case_insensitive_dict import CaseInsensitiveDict
+>>> from case_insensitive_dict import CaseInsensitiveDictJSONEncoder
+>>> from case_insensitive_dict import case_insensitive_dict_json_decoder
+
+>>> case_insensitive_dict = CaseInsensitiveDict[str](data={"Aa": "b"})
+>>> json_string = json.dumps(obj=case_insensitive_dict, cls=CaseInsensitiveDictJSONEncoder)
+>>> json_string
+'{"Aa": "b"}'
+
+>>> case_insensitive_dict = json.loads(s=json_string, object_hook=case_insensitive_dict_json_decoder)
+>>> case_insensitive_dict
+CaseInsensitiveDict({'Aa': 'b'})
+```
+
 ## Contributing
 
 Contributions are welcome via pull requests.

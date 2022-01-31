@@ -13,3 +13,5 @@ except PackageNotFoundError:
     __version__ = "unknown"
 
 from .case_insensitive_dict import CaseInsensitiveDict
+from .case_insensitive_dict import CaseInsensitiveDictJSONEncoder
+from .case_insensitive_dict import case_insensitive_dict_json_decoder

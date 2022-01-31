@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "case-insensitive-dictionary"
-version = "0.0.3"
+version = "0.0.4"
 description = "Case Insensitive Dictionary"
 authors = ["rikhilrai"]
 license = "MIT"
@@ -107,7 +107,6 @@ good-names = [
   "db",
   "id",
   "df",
-  "T",
   "dt",
 ]
 
