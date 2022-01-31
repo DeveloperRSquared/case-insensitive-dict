@@ -24,26 +24,41 @@ $ pip install -U case-insensitive-dictionary
 
 ## Example
 
+CaseInsensitiveDict:
+
 ```py
 >>> from case_insensitive_dict import CaseInsensitiveDict
 
->>> case_insensitive_dict = CaseInsensitiveDict[str](data={"Aa": "b"})
+>>> case_insensitive_dict = CaseInsensitiveDict[str, str](data={"Aa": "b"})
 >>> case_insensitive_dict.get("aa")
 'b'
 >>> case_insensitive_dict.get("Aa")
 'b'
 ```
 
-CaseInsensitiveDict is also compatible with json encoding/decoding:
+also supports generic keys:
+
+```py
+from typing import Union
+
+from case_insensitive_dict import CaseInsensitiveDict
+
+case_insensitive_dict = CaseInsensitiveDict[Union[str, int], str](data={"Aa": "b", 1: "c"})
+case_insensitive_dict["aa"]
+'b'
+case_insensitive_dict[1]
+'c'
+
+```
+
+and json encoding/decoding:
 
 ```py
 >>> import json
 
->>> from case_insensitive_dict import CaseInsensitiveDict
->>> from case_insensitive_dict import CaseInsensitiveDictJSONEncoder
->>> from case_insensitive_dict import case_insensitive_dict_json_decoder
+>>> from case_insensitive_dict import CaseInsensitiveDict, CaseInsensitiveDictJSONEncoder, case_insensitive_dict_json_decoder
 
->>> case_insensitive_dict = CaseInsensitiveDict[str](data={"Aa": "b"})
+>>> case_insensitive_dict = CaseInsensitiveDict[str, str](data={"Aa": "b"})
 >>> json_string = json.dumps(obj=case_insensitive_dict, cls=CaseInsensitiveDictJSONEncoder)
 >>> json_string
 '{"Aa": "b"}'
