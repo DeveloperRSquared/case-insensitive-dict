@@ -12,48 +12,55 @@ from typing import Optional
 from typing import Tuple
 from typing import TypeVar
 
-T = TypeVar('T')  # pylint: disable=invalid-name
+KT = TypeVar('KT')  # pylint: disable=invalid-name
+VT = TypeVar('VT')  # pylint: disable=invalid-name
 
 
 if sys.version_info < (3, 9):
-    AbcMutableMapping = abc.MutableMapping
+    MutableMapping = abc.MutableMapping
 else:
-    AbcMutableMapping = abc.MutableMapping[str, T]  # pylint: disable=unsubscriptable-object
+    MutableMapping = abc.MutableMapping[KT, VT]  # pylint: disable=unsubscriptable-object
 
 
-class CaseInsensitiveDict(AbcMutableMapping, Generic[T]):
-    def __init__(self, data: Optional[Mapping[str, T]] = None) -> None:
+class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
+    def __init__(self, data: Optional[Mapping[KT, VT]] = None) -> None:
         # Mapping from lowercased key to tuple of (actual key, value)
-        self._data: Dict[str, Tuple[str, T]] = {}
+        self._data: Dict[KT, Tuple[KT, VT]] = {}
         if data is None:
             data = {}
         self.update(data)
 
-    def __setitem__(self, key: str, value: T) -> None:
-        self._data[key.lower()] = (key, value)
+    @staticmethod
+    def _convert_key(key: KT) -> KT:
+        if isinstance(key, str):
+            return key.lower()  # type: ignore[return-value]
+        return key
 
-    def __getitem__(self, key: str) -> T:
-        return self._data[key.lower()][1]
+    def __setitem__(self, key: KT, value: VT) -> None:
+        self._data[self._convert_key(key=key)] = (key, value)
 
-    def __delitem__(self, key: str) -> None:
-        del self._data[key.lower()]
+    def __getitem__(self, key: KT) -> VT:
+        return self._data[self._convert_key(key=key)][1]
 
-    def __iter__(self) -> Iterator[str]:
+    def __delitem__(self, key: KT) -> None:
+        del self._data[self._convert_key(key=key)]
+
+    def __iter__(self) -> Iterator[KT]:
         return (key for key, _ in self._data.values())
 
     def __len__(self) -> int:
         return len(self._data)
 
-    def lower_items(self) -> Iterator[Tuple[str, T]]:
+    def lower_items(self) -> Iterator[Tuple[KT, VT]]:
         return ((key, val[1]) for key, val in self._data.items())
 
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, abc.Mapping):
             return False
-        other_dict = CaseInsensitiveDict[Any](data=other)
+        other_dict = CaseInsensitiveDict[Any, Any](data=other)
         return dict(self.lower_items()) == dict(other_dict.lower_items())
 
-    def copy(self) -> CaseInsensitiveDict[T]:
+    def copy(self) -> CaseInsensitiveDict[KT, VT]:
         return CaseInsensitiveDict(data=dict(self._data.values()))
 
     def __repr__(self) -> str:
@@ -61,9 +68,9 @@ class CaseInsensitiveDict(AbcMutableMapping, Generic[T]):
 
 
 class CaseInsensitiveDictJSONEncoder(JSONEncoder):
-    def default(self, o: CaseInsensitiveDict[T]) -> Mapping[str, T]:
+    def default(self, o: CaseInsensitiveDict[KT, VT]) -> Mapping[KT, VT]:
         return dict(o._data.values())  # pylint: disable=protected-access
 
 
-def case_insensitive_dict_json_decoder(data: Mapping[str, T]) -> CaseInsensitiveDict[T]:
+def case_insensitive_dict_json_decoder(data: Mapping[KT, VT]) -> CaseInsensitiveDict[KT, VT]:
     return CaseInsensitiveDict(data=data)
