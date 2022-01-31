@@ -14,6 +14,7 @@ exclude_lines =
     if __name__ == .__main__.:
     @(abc\.)?abstractmethod
     if TYPE_CHECKING
+    if sys\.version_info
 
 fail_under = 95
 

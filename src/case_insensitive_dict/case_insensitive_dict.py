@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sys
 from collections import abc
+from json import JSONEncoder
 from typing import Any
 from typing import Dict
 from typing import Generic
@@ -11,7 +12,7 @@ from typing import Optional
 from typing import Tuple
 from typing import TypeVar
 
-T = TypeVar('T')
+T = TypeVar('T')  # pylint: disable=invalid-name
 
 
 if sys.version_info < (3, 9):
@@ -57,3 +58,12 @@ class CaseInsensitiveDict(AbcMutableMapping, Generic[T]):
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}({dict(self.items())!r})'
+
+
+class CaseInsensitiveDictJSONEncoder(JSONEncoder):
+    def default(self, o: CaseInsensitiveDict[T]) -> Mapping[str, T]:
+        return dict(o._data.values())  # pylint: disable=protected-access
+
+
+def case_insensitive_dict_json_decoder(data: Mapping[str, T]) -> CaseInsensitiveDict[T]:
+    return CaseInsensitiveDict(data=data)
