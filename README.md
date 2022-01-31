@@ -39,14 +39,14 @@ CaseInsensitiveDict:
 also supports generic keys:
 
 ```py
-from typing import Union
+>>> from typing import Union
 
-from case_insensitive_dict import CaseInsensitiveDict
+>>> from case_insensitive_dict import CaseInsensitiveDict
 
-case_insensitive_dict = CaseInsensitiveDict[Union[str, int], str](data={"Aa": "b", 1: "c"})
-case_insensitive_dict["aa"]
+>>> case_insensitive_dict = CaseInsensitiveDict[Union[str, int], str](data={"Aa": "b", 1: "c"})
+>>> case_insensitive_dict["aa"]
 'b'
-case_insensitive_dict[1]
+>>> case_insensitive_dict[1]
 'c'
 
 ```
