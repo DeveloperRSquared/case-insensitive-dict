@@ -24,21 +24,23 @@ Install and update using [pip](https://pypi.org/project/case-insensitive-diction
 $ pip install -U case-insensitive-dictionary
 ```
 
+## API Reference
+
+| Method                    | Description                                                                                                                                         |
+| :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| clear()                   | Removes all elements from the dictionary.                                                                                                           |
+| copy()                    | Returns a copy of the dictionary.                                                                                                                   |
+| get(key, default)         | Returns the value (case-insensitively), of the item specified with the key.<br>Falls back to the default value if the specified key does not exist. |
+| fromkeys(iterable, value) | Returns a dictionary with the specified keys and the specified value.                                                                               |
+| keys()                    | Returns the dictionary's keys.                                                                                                                      |
+| values()                  | Returns the dictionary's values.                                                                                                                    |
+| items()                   | Returns the key-value pairs.                                                                                                                        |
+| pop(key)                  | Remove the specified item (case-insensitively).<br>The value of the removed item is the return value.                                               |
+| popitem()                 | Remove the last item that was inserted into the dictionary.<br>For Python version <3.7, popitem() removes a random item.                            |
+
 ## Example
 
 CaseInsensitiveDict:
-
-```py
->>> from case_insensitive_dict import CaseInsensitiveDict
-
->>> case_insensitive_dict = CaseInsensitiveDict[str, str](data={"Aa": "b"})
->>> case_insensitive_dict.get("aa")
-'b'
->>> case_insensitive_dict.get("Aa")
-'b'
-```
-
-also supports generic keys:
 
 ```py
 >>> from typing import Union
@@ -53,7 +55,7 @@ also supports generic keys:
 
 ```
 
-and json encoding/decoding:
+which also supports json encoding/decoding:
 
 ```py
 >>> import json
