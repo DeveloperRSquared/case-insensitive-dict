@@ -11,7 +11,7 @@ defaults:
 
 jobs:
   deploy_pypi:
-    name: Deploy TestPyPI
+    name: Deploy PyPI
 
     runs-on: ubuntu-latest
 
