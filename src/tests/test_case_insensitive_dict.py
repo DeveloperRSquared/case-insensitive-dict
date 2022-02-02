@@ -51,6 +51,17 @@ class TestInit(CaseInsensitiveDictTestCase):
         case_insensitive_dict_bool = CaseInsensitiveDict[bool, str]({True: "b"})
         assert case_insensitive_dict_bool._data == {True: (True, "b")}
 
+    # check picks the last key/value if instantiated with conflicting cases
+    def test_store_written_with_conflicting_cases(self) -> None:
+        case_insensitive_dict = CaseInsensitiveDict[str, str]({"a": "b", "A": "c"})
+        assert case_insensitive_dict._data == {"a": ("A", "c")}
+
+    # check instantiated with list of tuples
+    def test_store_written_with_list_of_tuples(self) -> None:
+        data = [("A", "b")]
+        case_insensitive_dict = CaseInsensitiveDict[str, str](data)
+        assert case_insensitive_dict._data == {"a": ("A", "b")}
+
 
 class TestTyping(CaseInsensitiveDictTestCase):
     # check valid typing
@@ -300,55 +311,105 @@ class TestStrAndRepr(CaseInsensitiveDictTestCase):
         assert case_insensitive_dict.__repr__() == "CaseInsensitiveDict({'A': 'b'})"
 
 
+class TestFromKeys(CaseInsensitiveDictTestCase):
+    # check fromkeys
+    def test_fromkeys(self) -> None:
+        dictionary = dict.fromkeys(["A", "b"], "c")
+        assert dictionary == {"A": "c", "b": "c"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str].fromkeys(["A", "b"], "c")
+        assert case_insensitive_dict == dictionary
+
+
 class TestDictMethods(CaseInsensitiveDictTestCase):
     # check dict
     def test_dict(self) -> None:
-        case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
-        assert dict(case_insensitive_dict) == {'A': 'b'}
+        dictionary = {"A": "b"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
+        assert dict(case_insensitive_dict) == dict(dictionary)
 
     # check dict with non-str keys
     def test_dict_with_non_str_keys(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[Union[str, int], str]({1: "b", "a": "c"})
-        assert dict(case_insensitive_dict) == {1: "b", "a": "c"}
-
-    # check keys
-    def test_keys(self) -> None:
-        case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
-        assert list(case_insensitive_dict.keys()) == ["A"]
+        assert dict(case_insensitive_dict) == dict({1: "b", "a": "c"})
 
     # check falsey dict
     def test_falsey(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[str, str]()
         assert not case_insensitive_dict
         assert bool(case_insensitive_dict) is False
+        assert not {}
+        assert bool({}) is False
 
     # check truthy dict
     def test_truthy(self) -> None:
-        case_insensitive_dict = CaseInsensitiveDict[str, str]({"a": "b"})
+        dictionary = {"a": "b"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
         assert case_insensitive_dict
         assert bool(case_insensitive_dict) is True
+        assert dictionary
+        assert bool(dictionary) is True
 
     # check clear
     def test_clear(self) -> None:
-        case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
+        dictionary = {"A": "b"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
         case_insensitive_dict.clear()
         assert not case_insensitive_dict
+        dictionary.clear()
+        assert not dictionary
+
+    # check reference to instantiated value not maintained
+    def test_reference(self) -> None:
+        dictionary = {"A": "b"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
+        assert id(case_insensitive_dict._data) != id(dictionary)
+        case_insensitive_dict.pop("a")
+        assert dictionary == {"A": "b"}
 
     # check pop
     def test_pop(self) -> None:
-        case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
-        response = case_insensitive_dict.pop("a")
-        assert response == "b"
+        dictionary = {"A": "b"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
+        assert dictionary.pop("A") == case_insensitive_dict.pop("a") == "b"
         assert not case_insensitive_dict
+        assert not dictionary
 
     # check pop key not in dictionary
     def test_pop_key_not_in_dictionary(self) -> None:
-        case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
+        dictionary = {"A": "b"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
         with pytest.raises(KeyError):
             case_insensitive_dict.pop("b")
+        with pytest.raises(KeyError):
+            dictionary.pop("b")
 
     # check pop key not in dictionary with default
     def test_pop_key_not_in_dictionary_with_default(self) -> None:
-        case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
+        dictionary = {"A": "b"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
+        assert dictionary.pop("A") == case_insensitive_dict.pop("a") == "b"
         response = case_insensitive_dict.pop("b", "a")
         assert response == 'a'
+
+    # check popitem
+    def test_pop_item(self) -> None:
+        dictionary = {"A": "b"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
+        assert dictionary.popitem() == case_insensitive_dict.popitem() == ("A", "b")
+        with pytest.raises(KeyError):
+            case_insensitive_dict.popitem()
+        with pytest.raises(KeyError):
+            dictionary.popitem()
+
+    # check keys
+    def test_keys(self) -> None:
+        dictionary = {"A": "b"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
+        assert dictionary.keys() == case_insensitive_dict.keys()
+        assert list(dictionary.keys()) == list(case_insensitive_dict.keys()) == ["A"]
+
+    # check values
+    def test_values(self) -> None:
+        dictionary = {"A": "b"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
+        assert list(dictionary.values()) == list(case_insensitive_dict.values()) == ["b"]

@@ -6,11 +6,14 @@ from json import JSONEncoder
 from typing import Any
 from typing import Dict
 from typing import Generic
+from typing import Iterable
 from typing import Iterator
 from typing import Mapping
 from typing import Optional
 from typing import Tuple
 from typing import TypeVar
+from typing import Union
+from typing import overload
 
 KT = TypeVar('KT')  # pylint: disable=invalid-name
 VT = TypeVar('VT')  # pylint: disable=invalid-name
@@ -23,7 +26,15 @@ else:
 
 
 class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
+    @overload
     def __init__(self, data: Optional[Mapping[KT, VT]] = None) -> None:
+        ...
+
+    @overload
+    def __init__(self, data: Optional[Iterable[Tuple[KT, VT]]] = None) -> None:
+        ...
+
+    def __init__(self, data: Optional[Union[Mapping[KT, VT], Iterable[Tuple[KT, VT]]]] = None) -> None:
         # Mapping from lowercased key to tuple of (actual key, value)
         self._data: Dict[KT, Tuple[KT, VT]] = {}
         if data is None:
@@ -68,6 +79,10 @@ class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
 
     def copy(self) -> CaseInsensitiveDict[KT, VT]:
         return CaseInsensitiveDict(data=dict(self._data.values()))
+
+    @classmethod
+    def fromkeys(cls, iterable: Iterable[KT], value: VT) -> CaseInsensitiveDict[KT, VT]:
+        return cls([(key, value) for key in iterable])
 
 
 class CaseInsensitiveDictJSONEncoder(JSONEncoder):
