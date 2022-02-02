@@ -12,6 +12,7 @@ from typing import Optional
 from typing import Tuple
 from typing import TypeVar
 
+T = TypeVar('T')  # pylint: disable=invalid-name
 KT = TypeVar('KT')  # pylint: disable=invalid-name
 VT = TypeVar('VT')  # pylint: disable=invalid-name
 
@@ -30,6 +31,9 @@ class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
             data = {}
         self.update(data)
 
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}({dict(self.items())!r})'
+
     @staticmethod
     def _convert_key(key: KT) -> KT:
         if isinstance(key, str):
@@ -40,7 +44,10 @@ class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
         self._data[self._convert_key(key=key)] = (key, value)
 
     def __getitem__(self, key: KT) -> VT:
-        return self._data[self._convert_key(key=key)][1]
+        try:
+            return self._data[self._convert_key(key=key)][1]
+        except KeyError:
+            raise KeyError(f"Key: {key!r} not found.") from None
 
     def __delitem__(self, key: KT) -> None:
         del self._data[self._convert_key(key=key)]
@@ -62,9 +69,6 @@ class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
 
     def copy(self) -> CaseInsensitiveDict[KT, VT]:
         return CaseInsensitiveDict(data=dict(self._data.values()))
-
-    def __repr__(self) -> str:
-        return f'{self.__class__.__name__}({dict(self.items())!r})'
 
 
 class CaseInsensitiveDictJSONEncoder(JSONEncoder):

@@ -29,18 +29,6 @@ $ pip install -U case-insensitive-dictionary
 CaseInsensitiveDict:
 
 ```py
->>> from case_insensitive_dict import CaseInsensitiveDict
-
->>> case_insensitive_dict = CaseInsensitiveDict[str, str](data={"Aa": "b"})
->>> case_insensitive_dict.get("aa")
-'b'
->>> case_insensitive_dict.get("Aa")
-'b'
-```
-
-also supports generic keys:
-
-```py
 >>> from typing import Union
 
 >>> from case_insensitive_dict import CaseInsensitiveDict
@@ -53,7 +41,7 @@ also supports generic keys:
 
 ```
 
-and json encoding/decoding:
+which also supports json encoding/decoding:
 
 ```py
 >>> import json
