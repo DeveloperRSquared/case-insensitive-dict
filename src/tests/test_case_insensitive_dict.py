@@ -413,3 +413,9 @@ class TestDictMethods(CaseInsensitiveDictTestCase):
         dictionary = {"A": "b"}
         case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
         assert list(dictionary.values()) == list(case_insensitive_dict.values()) == ["b"]
+
+    # check items
+    def test_items(self) -> None:
+        dictionary = {"A": "b"}
+        case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
+        assert list(dictionary.items()) == list(case_insensitive_dict.items()) == [("A", "b")]
