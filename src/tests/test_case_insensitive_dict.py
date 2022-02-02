@@ -370,7 +370,9 @@ class TestDictMethods(CaseInsensitiveDictTestCase):
     def test_pop(self) -> None:
         dictionary = {"A": "b"}
         case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
-        assert dictionary.pop("A") == case_insensitive_dict.pop("a") == "b"
+        response = case_insensitive_dict.pop("a")
+        assert dictionary.pop("A") == response
+        assert response == "b"
         assert not case_insensitive_dict
         assert not dictionary
 
@@ -387,7 +389,9 @@ class TestDictMethods(CaseInsensitiveDictTestCase):
     def test_pop_key_not_in_dictionary_with_default(self) -> None:
         dictionary = {"A": "b"}
         case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
-        assert dictionary.pop("A") == case_insensitive_dict.pop("a") == "b"
+        response = case_insensitive_dict.pop("a")
+        assert dictionary.pop("A") == response
+        assert response == "b"
         response = case_insensitive_dict.pop("b", "a")
         assert response == 'a'
 
