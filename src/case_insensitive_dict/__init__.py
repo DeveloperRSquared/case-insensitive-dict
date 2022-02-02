@@ -8,7 +8,7 @@ except ImportError:
     from importlib_metadata import PackageNotFoundError  # type: ignore[no-redef,misc]
 
 try:
-    __version__: str = version(__name__)
+    __version__: str = version('case-insensitive-dictionary')
 except PackageNotFoundError:
     __version__ = "unknown"
 
