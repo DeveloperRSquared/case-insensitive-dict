@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "case-insensitive-dictionary"
 version = "0.2.0"
-description = "Case Insensitive Dictionary"
+description = "Typed Python Case Insensitive Dictionary"
 authors = ["rikhilrai"]
 license = "MIT"
 readme = "README.md"
