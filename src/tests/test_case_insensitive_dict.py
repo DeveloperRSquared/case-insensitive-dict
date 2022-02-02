@@ -68,10 +68,10 @@ class TestTyping(CaseInsensitiveDictTestCase):
     def test_valid_types(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[str, str]({"a": "b"})
         # keys
-        case_insensitive_dict['a']  # pylint: disable=pointless-statement
-        case_insensitive_dict.get('a')
+        case_insensitive_dict["a"]  # pylint: disable=pointless-statement
+        case_insensitive_dict.get("a")
         # values
-        case_insensitive_dict['b'] = 'a'
+        case_insensitive_dict["b"] = "a"
 
     # check valid typings
     def test_valid_types_non_str_keys(self) -> None:
@@ -80,7 +80,7 @@ class TestTyping(CaseInsensitiveDictTestCase):
         case_insensitive_dict_int[1]  # pylint: disable=pointless-statement
         case_insensitive_dict_int.get(1)
         # values
-        case_insensitive_dict_int[2] = 'a'
+        case_insensitive_dict_int[2] = "a"
 
     # check valid with union
     def test_valid_types_union(self) -> None:
@@ -88,13 +88,13 @@ class TestTyping(CaseInsensitiveDictTestCase):
         # keys
         case_insensitive_dict[1]  # pylint: disable=pointless-statement
         case_insensitive_dict.get(1)
-        case_insensitive_dict['a']  # pylint: disable=pointless-statement
-        case_insensitive_dict.get('a')
+        case_insensitive_dict["a"]  # pylint: disable=pointless-statement
+        case_insensitive_dict.get("a")
         # values
-        case_insensitive_dict['b'] = 'a'
-        case_insensitive_dict['b'] = 2
-        case_insensitive_dict['b'] = True
-        case_insensitive_dict[2] = 'a'
+        case_insensitive_dict["b"] = "a"
+        case_insensitive_dict["b"] = 2
+        case_insensitive_dict["b"] = True
+        case_insensitive_dict[2] = "a"
         case_insensitive_dict[2] = 2
         case_insensitive_dict[2] = True
 
@@ -102,15 +102,15 @@ class TestTyping(CaseInsensitiveDictTestCase):
     def test_invalid_type(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[str, int]({"a": "3"})  # type: ignore[dict-item]
         case_insensitive_dict[1] = 2  # type: ignore[index]
-        case_insensitive_dict['b'] = "2"  # type: ignore[assignment]
+        case_insensitive_dict["b"] = "2"  # type: ignore[assignment]
 
 
 class TestContains(CaseInsensitiveDictTestCase):
     # check that key in CaseInsensitiveDict check works as expected
     def test_contains(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
-        assert 'A' in case_insensitive_dict
-        assert 'a' in case_insensitive_dict
+        assert "A" in case_insensitive_dict
+        assert "a" in case_insensitive_dict
 
     # check contains with non-str keys
     def test_contains_with_non_str_keys(self) -> None:
@@ -153,7 +153,7 @@ class TestGetItem(CaseInsensitiveDictTestCase):
     def test_key_missing(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[str, str]()
         assert case_insensitive_dict.get("b") is None
-        with pytest.raises(KeyError, match=r"Key: 'b' not found."):
+        with pytest.raises(KeyError, match=r'Key: "b" not found.'):
             assert case_insensitive_dict["b"]
 
     # check behaviour when key is missing and default passed
@@ -298,7 +298,7 @@ class TestJson(CaseInsensitiveDictTestCase):
     def test_from_json(self) -> None:
         json_string = '{"A": "a", "b": 1, "c": false, "2": "a", "true": 2}'
         case_insensitive_dict = json.loads(s=json_string, object_hook=case_insensitive_dict_json_decoder)
-        expected_case_insensitive_dict = CaseInsensitiveDict[Union[bool, str, int], Union[str, int, bool]]({"A": "a", "b": 1, "c": False, '2': "a", 'true': 2})
+        expected_case_insensitive_dict = CaseInsensitiveDict[Union[bool, str, int], Union[str, int, bool]]({"A": "a", "b": 1, "c": False, "2": "a", "true": 2})
         assert case_insensitive_dict == expected_case_insensitive_dict
         assert case_insensitive_dict == json.loads(json_string)
 
@@ -307,8 +307,8 @@ class TestStrAndRepr(CaseInsensitiveDictTestCase):
     # check string and representation
     def test_str_and_repr(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
-        assert case_insensitive_dict.__str__() == "CaseInsensitiveDict({'A': 'b'})"
-        assert case_insensitive_dict.__repr__() == "CaseInsensitiveDict({'A': 'b'})"
+        assert case_insensitive_dict.__str__() == 'CaseInsensitiveDict({"A": "b"})'
+        assert case_insensitive_dict.__repr__() == 'CaseInsensitiveDict({"A": "b"})'
 
 
 class TestFromKeys(CaseInsensitiveDictTestCase):
@@ -370,8 +370,9 @@ class TestDictMethods(CaseInsensitiveDictTestCase):
     def test_pop(self) -> None:
         dictionary = {"A": "b"}
         case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
+        dict_response = dictionary.pop("A")
         response = case_insensitive_dict.pop("a")
-        assert dictionary.pop("A") == response
+        assert dict_response == response
         assert response == "b"
         assert not case_insensitive_dict
         assert not dictionary
@@ -389,11 +390,12 @@ class TestDictMethods(CaseInsensitiveDictTestCase):
     def test_pop_key_not_in_dictionary_with_default(self) -> None:
         dictionary = {"A": "b"}
         case_insensitive_dict = CaseInsensitiveDict[str, str](dictionary)
+        dict_response = dictionary.pop("A")
         response = case_insensitive_dict.pop("a")
-        assert dictionary.pop("A") == response
+        assert dict_response == response
         assert response == "b"
         response = case_insensitive_dict.pop("b", "a")
-        assert response == 'a'
+        assert response == "a"
 
     # check popitem
     def test_pop_item(self) -> None:
