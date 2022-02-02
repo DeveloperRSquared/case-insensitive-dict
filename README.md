@@ -1,6 +1,6 @@
 # Case Insensitive Dict
 
-Case Insensitive Dictionary
+Typed Python Case Insensitive Dictionary
 
 [![Publish](https://github.com/DeveloperRSquared/case-insensitive-dict/actions/workflows/publish.yml/badge.svg)](https://github.com/DeveloperRSquared/case-insensitive-dict/actions/workflows/publish.yml)
 
@@ -8,8 +8,10 @@ Case Insensitive Dictionary
 [![PyPI - License](https://img.shields.io/pypi/l/case-insensitive-dictionary.svg)](LICENSE)
 [![PyPI - Version](https://img.shields.io/pypi/v/case-insensitive-dictionary.svg)](https://pypi.org/project/case-insensitive-dictionary)
 
+[![CodeQL](https://github.com/DeveloperRSquared/case-insensitive-dict/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/DeveloperRSquared/case-insensitive-dict/actions/workflows/codeql-analysis.yml)
 [![codecov](https://codecov.io/gh/DeveloperRSquared/case-insensitive-dict/branch/main/graph/badge.svg?token=45JCHX8KT9)](https://codecov.io/gh/DeveloperRSquared/case-insensitive-dict)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/DeveloperRSquared/case-insensitive-dict/main.svg)](https://results.pre-commit.ci/latest/github/DeveloperRSquared/case-insensitive-dict/main)
+
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
