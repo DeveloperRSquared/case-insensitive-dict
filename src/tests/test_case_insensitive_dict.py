@@ -153,7 +153,7 @@ class TestGetItem(CaseInsensitiveDictTestCase):
     def test_key_missing(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[str, str]()
         assert case_insensitive_dict.get("b") is None
-        with pytest.raises(KeyError, match=r'Key: "b" not found.'):
+        with pytest.raises(KeyError, match=r"Key: 'b' not found."):
             assert case_insensitive_dict["b"]
 
     # check behaviour when key is missing and default passed
@@ -307,8 +307,8 @@ class TestStrAndRepr(CaseInsensitiveDictTestCase):
     # check string and representation
     def test_str_and_repr(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
-        assert case_insensitive_dict.__str__() == 'CaseInsensitiveDict({"A": "b"})'
-        assert case_insensitive_dict.__repr__() == 'CaseInsensitiveDict({"A": "b"})'
+        assert case_insensitive_dict.__str__() == "CaseInsensitiveDict({'A': 'b'})"
+        assert case_insensitive_dict.__repr__() == "CaseInsensitiveDict({'A': 'b'})"
 
 
 class TestFromKeys(CaseInsensitiveDictTestCase):
