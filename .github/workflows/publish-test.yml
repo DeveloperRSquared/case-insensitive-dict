@@ -14,8 +14,9 @@ defaults:
     shell: bash
 
 jobs:
-  release:
-    name: Release
+  deploy_pypi:
+    name: Deploy TestPyPI
+
     runs-on: ubuntu-latest
 
     environment:
