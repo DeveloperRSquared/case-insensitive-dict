@@ -3,7 +3,7 @@ ci:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.1.0
     hooks:
       - id: check-ast
       - id: check-builtin-literals
@@ -41,12 +41,12 @@ repos:
             '--ignore-init-module-imports',
           ]
   - repo: https://github.com/psf/black
-    rev: 21.12b0
+    rev: 22.1.0
     hooks:
       - id: black
         language_version: python3
         args: ['--config', 'pyproject.toml']
-  - repo: https://gitlab.com/pycqa/flake8
+  - repo: https://github.com/PyCQA/flake8
     rev: 4.0.1
     hooks:
       - id: flake8
