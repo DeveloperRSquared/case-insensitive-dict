@@ -67,7 +67,7 @@ jobs:
         run: poetry install --no-dev
 
       - name: Check imports
-        run: poetry run python -c 'from src.http_exceptions import __version__; print(__version__)'
+        run: poetry run python -c 'from src.case_insensitive_dict import __version__; print(__version__)'
 
       - name: Install dev dependencies
         run: poetry install
