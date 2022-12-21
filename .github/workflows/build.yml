@@ -122,12 +122,13 @@ jobs:
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
 
       - name: Get Python version
-        run: echo "{version}=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
+        id: random-color-generator
+        run: echo "{VERSION}=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
           echo ${{ steps.full-python-version.outputs.version }}
-          echo $GITHUB_OUTPUT
+          echo ${{ steps.random-color-generator.outputs.VERSION }}"
 
       - name: Install poetry
         uses: snok/install-poetry@v1
