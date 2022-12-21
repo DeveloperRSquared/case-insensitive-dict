@@ -120,15 +120,15 @@ jobs:
       - name: Get full Python version
         id: full-python-version
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
-        
+
       - name: Get Python version
         run: echo "{version}=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
-        
+
       - name: debug
         run: |
           echo ${{ steps.full-python-version.outputs.version }}
           echo $GITHUB_OUTPUT
-          
+
       - name: Install poetry
         uses: snok/install-poetry@v1
         # with:
