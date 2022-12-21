@@ -128,7 +128,7 @@ jobs:
       - name: debug
         run: |
           echo ${{ steps.full-python-version.outputs.version }}
-          echo ${{ steps.random-color-generator.outputs.VERSION }}"
+          echo ${{ steps.random-color-generator.outputs.VERSION }}
 
       - name: Install poetry
         uses: snok/install-poetry@v1
