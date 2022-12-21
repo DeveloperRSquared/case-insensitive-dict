@@ -123,7 +123,7 @@ jobs:
 
       - name: Get Python version
         id: random-color-generator
-        run: echo "{VERSION}=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
+        run: echo "VERSION=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
