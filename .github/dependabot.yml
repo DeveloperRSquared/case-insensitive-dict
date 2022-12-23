@@ -4,22 +4,27 @@ updates:
   - package-ecosystem: 'pip'
     directory: '/'
     schedule:
-      interval: daily
+      interval: 'weekly'
     open-pull-requests-limit: 3
     ignore:
-      - dependency-name: "autoflake"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "black"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "flake8"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "isort"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "mypy"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "pre-commit"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "pylint"
-        update-types: ["version-update:semver-patch"]
-      - dependency-name: "pytest"
-        update-types: ["version-update:semver-patch"]
+      - dependency-name: 'autoflake'
+        update-types: ['version-update:semver-patch']
+      - dependency-name: 'black'
+        update-types: ['version-update:semver-patch']
+      - dependency-name: 'flake8'
+        update-types: ['version-update:semver-patch']
+      - dependency-name: 'isort'
+        update-types: ['version-update:semver-patch']
+      - dependency-name: 'mypy'
+        update-types: ['version-update:semver-patch']
+      - dependency-name: 'pre-commit'
+        update-types: ['version-update:semver-patch']
+      - dependency-name: 'pylint'
+        update-types: ['version-update:semver-patch']
+      - dependency-name: 'pytest'
+        update-types: ['version-update:semver-patch']
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
