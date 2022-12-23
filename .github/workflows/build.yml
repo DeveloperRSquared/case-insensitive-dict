@@ -7,157 +7,24 @@ on:
     branches:
       - main
 
-defaults:
-  run:
-    shell: bash
-
 concurrency:
   group: ${{ github.head_ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    name: Build (${{ matrix.python-version }}) ${{ matrix.suffix }}
+    uses: DeveloperRSquared/.github/.github/workflows/python_package_build_template.yml@main
+    with:
+      package_name: case_insensitive_dict
 
-    runs-on: ${{ matrix.image }}
-    strategy:
-      matrix:
-        os: [Ubuntu]
-        python-version: ['3.7', '3.8', '3.9', '3.10']
-        include:
-          - os: Ubuntu
-            image: ubuntu-latest
-      fail-fast: false
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Get full Python version
-        id: full-python-version
-        run: echo "VERSION=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
-
-      - name: Install poetry
-        uses: snok/install-poetry@v1
-        # with:
-        #   version: 1.1.12
-        #   virtualenvs-in-project: true
-
-      - name: Configure poetry
-        run: poetry config virtualenvs.in-project true
-
-      - name: Set up cache
-        uses: actions/cache@v3
-        id: cache
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.VERSION }}-${{ hashFiles('**/poetry.lock') }}
-
-      - name: Ensure cache is healthy
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: timeout 10s poetry run pip --version || rm -rf .venv
-
-      - name: Install dependencies
-        run: poetry install --no-dev
-
-      - name: Check imports
-        run: poetry run python -c 'from src.case_insensitive_dict import __version__; print(__version__)'
-
-      - name: Install dev dependencies
-        run: poetry install
-
-      - name: Check import order (isort)
-        run: poetry run python -m isort --check-only --settings-path $(pwd)/pyproject.toml src/
-
-      - name: Check unused imports (autoflake)
-        run: poetry run python -m autoflake --check --remove-unused-variable --remove-all-unused-imports --expand-star-imports --ignore-init-module-imports --recursive src/
-
-      - name: Check code style (black)
-        run: poetry run python -m black --config $(pwd)/pyproject.toml .
-
-      - name: Check code style (flake8)
-        run: poetry run python -m flake8 --config $(pwd)/.flake8
-
-      - name: Check lint (pylint)
-        run: poetry run python -m pylint --rcfile $(pwd)/pyproject.toml src/
-
-      - name: Check typing (mypy)
-        run: poetry run python -m mypy --config-file $(pwd)/pyproject.toml src/
-
-      - name: Install pytest plugin
-        if: ${{ matrix.python-version == '3.10' }}
-        run: poetry run pip install pytest-github-actions-annotate-failures
-
-      - name: Run tests (pytest)
-        run: poetry run python -m pytest src/
-
-  build_test_pypi:
-    name: Build TestPyPI
-
-    runs-on: ubuntu-latest
+  publish_test_pypi_dry_run:
+    uses: DeveloperRSquared/.github/.github/workflows/python_package_publish_template.yml@main
     needs: build
-
-    environment:
-      name: TestPyPI
-      url: https://test.pypi.org/project/case-insensitive-dictionary/
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-
-      - name: Set up python 3.10
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Get full Python version
-        id: full-python-version
-        run: echo "VERSION=$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")" >> $GITHUB_OUTPUT
-
-      - name: Install poetry
-        uses: snok/install-poetry@v1
-        # with:
-        #   version: 1.1.12
-
-      - name: Configure poetry
-        run: poetry config virtualenvs.in-project true
-
-      - name: Set up cache
-        uses: actions/cache@v3
-        id: cache
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.VERSION }}-${{ hashFiles('**/poetry.lock') }}
-
-      - name: Ensure cache is healthy
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: timeout 10s poetry run pip --version || rm -rf .venv
-
-      - name: Install dependencies
-        run: poetry install
-
-      - name: Run tests (pytest)
-        run: poetry run python -m pytest -c $(pwd)/pyproject.toml
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Build project for distribution
-        run: poetry build
-
-      - name: Publish to Test PyPI (dry run)
-        env:
-          POETRY_REPOSITORIES_TESTPYPI_URL: https://test.pypi.org/legacy/
-          POETRY_HTTP_BASIC_TESTPYPI_USERNAME: __token__
-          POETRY_HTTP_BASIC_TESTPYPI_PASSWORD: ${{ secrets.TESTPYPI_TOKEN }}
-        run: poetry publish --dry-run --repository testpypi
+    with:
+      environment: TestPyPI
+      pypi_url: https://test.pypi.org/project/case-insensitive-dictionary/
+      should_upload_coverage_to_codecov: true
+      should_dry_run_publish_to_test_pypi: true
+    secrets:
+      codecov_token: ${{ secrets.CODECOV_TOKEN }}
+      pypi_token: ${{ secrets.TESTPYPI_TOKEN }}

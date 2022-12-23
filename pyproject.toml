@@ -34,7 +34,7 @@ include = [
     "LICENSE",
 ]
 packages = [
-    { include = "case_insensitive_dict", from = "src" },
+    { include = "case_insensitive_dict", from = "." },
 ]
 
 [tool.poetry.dependencies]
@@ -87,7 +87,7 @@ exclude = '''
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--capture=no --log-cli-level=INFO --cov=src/case_insensitive_dict/ --cov-report term-missing --cov-report=xml --cov-fail-under=90 --cov-config=./.coveragerc src/tests/"
+addopts = "--capture=no --log-cli-level=INFO --cov=case_insensitive_dict/ --cov-report term-missing --cov-report=xml --cov-fail-under=90 --cov-config=./.coveragerc tests/"
 testpaths = [
     "tests",
 ]
