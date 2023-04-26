@@ -27,10 +27,11 @@ $ pip install -U case-insensitive-dictionary
 ## API Reference
 
 | Method                    | Description                                                                                                                                         |
-| :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:--------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------|
 | clear()                   | Removes all elements from the dictionary.                                                                                                           |
 | copy()                    | Returns a copy of the dictionary.                                                                                                                   |
 | get(key, default)         | Returns the value (case-insensitively), of the item specified with the key.<br>Falls back to the default value if the specified key does not exist. |
+| getkey(key)               | Returns the original case-sensitive key using a case-insensitive search.                                                                            |
 | fromkeys(iterable, value) | Returns a dictionary with the specified keys and the specified value.                                                                               |
 | keys()                    | Returns the dictionary's keys.                                                                                                                      |
 | values()                  | Returns the dictionary's values.                                                                                                                    |
@@ -52,6 +53,8 @@ CaseInsensitiveDict:
 'b'
 >>> case_insensitive_dict[1]
 'c'
+>>> case_insensitive_dict.getkey("aa")
+'Aa'
 
 ```
 

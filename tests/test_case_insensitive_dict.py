@@ -285,6 +285,20 @@ class TestCopy(CaseInsensitiveDictTestCase):
         assert case_insensitive_dict == case_insensitive_dict.copy()
 
 
+class TestGetKey(CaseInsensitiveDictTestCase):
+    # check to ensure original key is returned after case-insensitive lookup
+    def test_getkey(self) -> None:
+        case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
+        assert case_insensitive_dict.getkey('a') == 'A'
+        assert case_insensitive_dict.getkey('A') == 'A'
+
+    # check for key error
+    def test_getkey_key_not_in_dictionary(self) -> None:
+        case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
+        with pytest.raises(KeyError):
+            case_insensitive_dict.getkey("b")
+
+
 class TestJson(CaseInsensitiveDictTestCase):
     # check to_json
     def test_to_json(self) -> None:
