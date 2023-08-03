@@ -84,7 +84,7 @@ class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
         return CaseInsensitiveDict(data=dict(self._data.values()))
 
     def getkey(self, key: KT) -> KT:
-        return self._get_key_value(key)[0]
+        return self._get_key_value(key=key)[0]
 
     @classmethod
     def fromkeys(cls, iterable: Iterable[KT], value: VT) -> CaseInsensitiveDict[KT, VT]:
