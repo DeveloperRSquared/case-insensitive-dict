@@ -60,7 +60,7 @@ class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
         self._data[self._convert_key(key=key)] = (key, value)
 
     def __getitem__(self, key: KT) -> VT:
-        return self._get_key_value(key)[1]
+        return self._get_key_value(key=key)[1]
 
     def __delitem__(self, key: KT) -> None:
         del self._data[self._convert_key(key=key)]
