@@ -50,14 +50,17 @@ class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
             return key.lower()  # type: ignore[return-value]
         return key
 
+    def _get_key_value(self, key: KT) -> Tuple[KT, VT]:
+        try:
+            return self._data[self._convert_key(key=key)]
+        except KeyError:
+            raise KeyError(f"Key: {key!r} not found.") from None
+
     def __setitem__(self, key: KT, value: VT) -> None:
         self._data[self._convert_key(key=key)] = (key, value)
 
     def __getitem__(self, key: KT) -> VT:
-        try:
-            return self._data[self._convert_key(key=key)][1]
-        except KeyError:
-            raise KeyError(f"Key: {key!r} not found.") from None
+        return self._get_key_value(key=key)[1]
 
     def __delitem__(self, key: KT) -> None:
         del self._data[self._convert_key(key=key)]
@@ -79,6 +82,9 @@ class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
 
     def copy(self) -> CaseInsensitiveDict[KT, VT]:
         return CaseInsensitiveDict(data=dict(self._data.values()))
+
+    def getkey(self, key: KT) -> KT:
+        return self._get_key_value(key=key)[0]
 
     @classmethod
     def fromkeys(cls, iterable: Iterable[KT], value: VT) -> CaseInsensitiveDict[KT, VT]:
