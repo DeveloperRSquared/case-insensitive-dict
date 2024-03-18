@@ -27,12 +27,10 @@ else:
 
 class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
     @overload
-    def __init__(self, data: Optional[Mapping[KT, VT]] = None) -> None:
-        ...
+    def __init__(self, data: Optional[Mapping[KT, VT]] = None) -> None: ...
 
     @overload
-    def __init__(self, data: Optional[Iterable[Tuple[KT, VT]]] = None) -> None:
-        ...
+    def __init__(self, data: Optional[Iterable[Tuple[KT, VT]]] = None) -> None: ...
 
     def __init__(self, data: Optional[Union[Mapping[KT, VT], Iterable[Tuple[KT, VT]]]] = None) -> None:
         # Mapping from lowercased key to tuple of (actual key, value)
