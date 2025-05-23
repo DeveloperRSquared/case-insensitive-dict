@@ -27,6 +27,11 @@ class TestInit(CaseInsensitiveDictTestCase):
         case_insensitive_dict = CaseInsensitiveDict[str, str]({"A": "b"})
         assert case_insensitive_dict._data == {"a": ("A", "b")}
 
+    # check that the key in the store is properly converted and lowered
+    def test_store_written_case_insensitive_indistinct(self) -> None:
+        case_insensitive_dict = CaseInsensitiveDict[str, str]({"ß": "b"})
+        assert case_insensitive_dict._data == {"ss": ("ß", "b")}
+
     # check instantiated with an empty dict
     def test_store_written_empty(self) -> None:
         case_insensitive_dict = CaseInsensitiveDict[str, str]({})

@@ -47,7 +47,7 @@ class CaseInsensitiveDict(MutableMapping, Generic[KT, VT]):
     @staticmethod
     def _convert_key(key: KT) -> KT:
         if isinstance(key, str):
-            return key.lower()  # type: ignore[return-value]
+            return key.casefold()  # type: ignore[return-value]
         return key
 
     def _get_key_value(self, key: KT) -> Tuple[KT, VT]:
